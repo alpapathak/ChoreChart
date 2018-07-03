@@ -1,0 +1,35 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<bean id="registerDAO" class=" com.chorechart.dao.impl.registerDAOImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="parentsDAO" class=" com.chorechart.dao.impl.parentsDAOImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="kidsDAO" class=" com.chorechart.dao.impl.kidsDAOImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="choresDAO" class=" com.chorechart.dao.impl.choresDAOImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    
+   <!--  <bean id="formValidator" class="com.chorechart.validation.FormValidator" /> -->
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />  
+		<property name="url" value="jdbc:mysql://localhost/chorechart" />  
+		<property name="username" value="alpa" />  
+		<property name="password" value="socrates09*" />  
+	</bean>
+
+</beans>
