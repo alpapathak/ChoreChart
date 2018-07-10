@@ -23,34 +23,34 @@ import com.chorechart.model.Parents;
 import com.chorechart.model.kid_chore;
 
 @Controller
-@RequestMapping("chores")
+//@RequestMapping("chores")
 
 public class ChoresController {
 	
 	 @Autowired
 	 private ChoresDAO choresDAO;
 	 
-	 @RequestMapping(value = "/ChildActivityFromParent", method = RequestMethod.GET)
-	  public ModelAndView showChildChore(@RequestParam("loginId")String kidsName,@ModelAttribute("parentObj")Parents parents,HttpServletRequest request, HttpServletResponse response,
-	  @ModelAttribute Chores newChore,BindingResult result) {
-		 //String kidsName= request.getParameter("name");
-		 List<kid_chore> kidsChoresList = new ArrayList<kid_chore>();
-		 kidsChoresList=choresDAO.displayCompletedChoresOfUser(kidsName);
-		 List<Chores> choreslist = new ArrayList<Chores>();
-		 choreslist=choresDAO.displayChores();
-		 Kids kidLogin = new Kids();
-		 kidLogin.setLoginId(kidsName);
-		 ModelAndView modelandview = new ModelAndView("ChildActivityFromParent");
-		 modelandview.addObject("parentFName",parents.getFirstName());
-		 modelandview.addObject("parentLName", parents.getLastName());
-		 modelandview.addObject("userName",parents.getUserName());
-		 modelandview.addObject("allChoresOfKids",kidsChoresList);
-		 modelandview.addObject("listOfChores",choreslist);
-		 modelandview.addObject("parentObj",parents);
-		 modelandview.addObject("loginId",kidsName);
-		 
-		 return modelandview;
-	  }
+//	 @RequestMapping(value = "/ChildActivityFromParent", method = RequestMethod.GET)
+//	  public ModelAndView showChildChore(@RequestParam("loginId")String kidsName,@ModelAttribute("parentObj")Parents parents,HttpServletRequest request, HttpServletResponse response,
+//	  @ModelAttribute Chores newChore,BindingResult result) {
+//		 //String kidsName= request.getParameter("name");
+//		 List<kid_chore> kidsChoresList = new ArrayList<kid_chore>();
+//		 kidsChoresList=choresDAO.displayCompletedChoresOfUser(kidsName);
+//		 List<Chores> choreslist = new ArrayList<Chores>();
+//		 choreslist=choresDAO.displayChores();
+//		 Kids kidLogin = new Kids();
+//		 kidLogin.setLoginId(kidsName);
+//		 ModelAndView modelandview = new ModelAndView("ChildActivityFromParent");
+//		 modelandview.addObject("parentFName",parents.getFirstName());
+//		 modelandview.addObject("parentLName", parents.getLastName());
+//		 modelandview.addObject("userName",parents.getUserName());
+//		 modelandview.addObject("allChoresOfKids",kidsChoresList);
+//		 modelandview.addObject("listOfChores",choreslist);
+//		 modelandview.addObject("parentObj",parents);
+//		 modelandview.addObject("loginId",kidsName);
+//		 
+//		 return modelandview;
+//	  }
 	 
 	 @RequestMapping(value = "/kidsView",method=RequestMethod.POST)
 	  public ModelAndView addKidActivity(HttpServletRequest request, HttpServletResponse response,
@@ -65,17 +65,12 @@ public class ChoresController {
 	  }
 	 
 	 @RequestMapping(value = "/addChoreProcess", method = RequestMethod.POST)
-	  public ModelAndView addNewChore(@ModelAttribute("parentObj")Parents parents,HttpServletRequest request, HttpServletResponse response,
+	  public ModelAndView addNewChore(HttpServletRequest request, HttpServletResponse response,
 	  @ModelAttribute Chores newChore,BindingResult result) {
 		 choresDAO.addChore(newChore);
 		 List<Chores> choreslist = new ArrayList<Chores>();
 		 choreslist=choresDAO.displayChores();
 		 ModelAndView modelandview = new ModelAndView("parentsView");
-		 modelandview.addObject("parentFName",parents.getFirstName());
-		 modelandview.addObject("parentLName", parents.getLastName());
-		 modelandview.addObject("userName",parents.getUserName());
-		 modelandview.addObject("listOfChores",choreslist);
-		 modelandview.addObject("parentObj",parents);
 		 return modelandview;
 	  }
 	 
@@ -92,15 +87,16 @@ public class ChoresController {
 		}
 		
 		 @RequestMapping(value = "/addChore",method=RequestMethod.GET)
-		  public ModelAndView showChore(@RequestParam("loginId")String kidsName,HttpServletRequest request, HttpServletResponse response,
+		  public ModelAndView showChore(@ModelAttribute("kidSelected")Kids kidsName,HttpServletRequest request, HttpServletResponse response,
 				  @ModelAttribute Parents parents,BindingResult result) {
 			 ModelAndView chore = new ModelAndView("addChore");
 			 chore.addObject("chores",new Chores());
 			 chore.addObject("parentObj",parents);
-			 chore.addObject("loginId",kidsName);
+			 chore.addObject("kidSelected",kidsName);
 			 List<Chores> choreslist = new ArrayList<Chores>();
 			 choreslist=choresDAO.displayChores();
 			 chore.addObject("listOfChores",choreslist);
+			// System.out.println("chores object has :"+chore);
 			 return chore;
 		  }
 

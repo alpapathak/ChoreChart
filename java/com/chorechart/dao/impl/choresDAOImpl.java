@@ -1,6 +1,9 @@
 package com.chorechart.dao.impl;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +12,9 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import com.chorechart.dao.ChoresDAO;
@@ -47,7 +53,8 @@ public class choresDAOImpl implements ChoresDAO {
 				+ "values(?,?)";
 		
 		jdbcTemplate.update(sql_chores, new Object[] { newChore.getChoreDesc(),newChore.getChorePoints()});
-
+		
+		
 	}
 
 	@Override
@@ -90,9 +97,8 @@ public class choresDAOImpl implements ChoresDAO {
 	@Override
 	public void assignChoreToKid(String loginId, int choreId,int chorePoints) {
 		// TODO Auto-generated method stub
-		
-		String sql_select_chores = "Select ChorePoints from chores where choreId = '"+choreId+"'";
-		
+		System.out.println("Chore Id"+choreId);
+
 		
 		String sql_chores_kid = "Insert into kid_chore"+"(ChoreId,ChoreStatus,kidLoginId,Notes,Points)"
 				+ "values(?,?,?,?,?)";
@@ -166,6 +172,35 @@ public class choresDAOImpl implements ChoresDAO {
 		String sql_update_complete = "Update kid_chore set ChoreStatus = 'C' where kidLoginId = '"+loginId +
 				"' and ChoreId = "+choreId;
 		jdbcTemplate.update(sql_update_complete);
+	}
+
+	@Override
+	public void addAndAssignChoreToKid(String loginId,final Chores newChore) {
+		// TODO Auto-generated method stub
+		final String sql_chores = "Insert into chores"+"(ChoreDesc,ChorePoints)"
+				+ "values(?,?)";
+		
+		//jdbcTemplate.update(sql_chores, new Object[] { newChore.getChoreDesc(),newChore.getChorePoints()});
+		
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdbcTemplate.update(
+		    new PreparedStatementCreator() {
+		        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+		            PreparedStatement ps =
+		                connection.prepareStatement(sql_chores, new String[] {"ChoreId"});
+		            ps.setString(1, newChore.getChoreDesc());
+		            ps.setInt(2,newChore.getChorePoints());
+		            return ps;
+		        }
+		    },
+		    keyHolder);
+		long choreId = (long) keyHolder.getKey();
+		String sql_chores_kid = "Insert into kid_chore"+"(ChoreId,ChoreStatus,kidLoginId,Notes,Points)"
+				+ "values(?,?,?,?,?)";
+		
+		jdbcTemplate.update(sql_chores_kid, new Object[] { choreId,"A",loginId,"Assigned",newChore.getChorePoints()});
+
+		
 	}
 
 

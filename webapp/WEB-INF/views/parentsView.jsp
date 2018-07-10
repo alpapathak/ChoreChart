@@ -16,13 +16,13 @@
 <div>
 	<img src="/resources/images/chorechart.jpg"  width="200px" height="200px">
 	 <div align="right">
-			<a href="loginParents.jsp">Parent Login</a>
+			<a href="index.jsp">logout</a>
 			<a href="loginChilds.jsp">Kids Login</a>
 	</div>
 </div>
 
 
-<div>${parentFName} ${parentLName}   ${userName} </div>
+<div>${parentFName} ${parentLName} </div>
 
  <!--  <div align= "right">
  	<a href ="addChore.jsp?userName=${userName}">Add New Chore</a>

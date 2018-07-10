@@ -11,18 +11,8 @@
 <link href="${mainCss}" rel="stylesheet" />
 <script language = "javascript">
 
-/*var x = document.getElementById("reason");
-var y = document.getElementById("points");
-y.addEventListener("blur", myBlurFunction, true);
 
 
-function myBlurFunction() {
-	 document.getElementById("pointsAwarded").value=document.getElementById("points").value; 
-}*/
-function addURL(){
-	alert("abc "+href);
-}
-</script>
 </script>
 <title>Activity Page </title>
 </head>
@@ -32,11 +22,12 @@ function addURL(){
 	 	 <div align="right">
 			<a href="loginParents.jsp">Parent Login</a>
 			<a href="loginChilds.jsp">Kids Login</a>
-	</div>
-	</div>
+		</div>
+		<div align="left"><a href="parentsView.jsp">back</a></div>
+</div>
 <div align="center">
 <table>
-	<thead>Chores to be approved for '${loginId}'</thead>
+	<thead>Chores to be approved for '${kidSelected.loginId}'</thead>
 		<th>Chore Name</th>
 		<th>Notes</th>
 		<th>Status</th>
@@ -49,7 +40,7 @@ function addURL(){
 		 	 <td>&nbsp;&nbsp;${lc.choreAssigned.chorePoints}</td>
 		 	 <td>
 		 	 <a onclick="addURL();" href="<c:url value='approve.jsp'>
-				<c:param name='loginId' value= '${loginId}'/>
+				<c:param name='loginId' value= '${kidSelected.loginId}'/>
 				<c:param name='choreId' value= '${lc.choreId}'/>
 				<c:param name='pointsAwarded' value= '${lc.choreAssigned.chorePoints}'/>
 		</c:url>">
@@ -59,7 +50,7 @@ function addURL(){
 		</td>
 		 <td>
 		 	 <a href="<c:url value='reassign.jsp'>
-				<c:param name='loginId' value= '${loginId}'/>
+				<c:param name='loginId' value= '${kidSelected.loginId}'/>
 				<c:param name='choreId' value= '${lc.choreId}'/>
 		</c:url>">
 		Reassign
@@ -73,7 +64,7 @@ function addURL(){
  
  <div align= "left">
  <a href="<c:url value='addChore.jsp'>
-			<c:param name='loginId' value= '${loginId}'/>
+			<c:param name='loginId' value= '${kidSelected.loginId}'/>
 		</c:url>">
 	Assign New Chore</a>
  </div>

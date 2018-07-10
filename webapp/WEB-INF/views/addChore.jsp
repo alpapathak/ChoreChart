@@ -19,12 +19,12 @@
 			<a href="loginChilds.jsp">Kids Login</a>
 	</div>
 </div>
-<div>Assign Chores to ${loginId}</div>
+<div>Assign Chores to ${kidSelected.loginId}</div>
 <div>
 <form:form id="assignChoretoChild" action="addChoreKidProcess" method="post" modelAttribute="chores">
 <form:select path="choreId" items="${listOfChores}" itemValue="choreId" itemLabel="choreDesc" />
 <tr>
-<input type ="hidden" name="loginId" value="${loginId}"/>
+<input type ="hidden" name="loginId" value="${kidSelected.loginId}"/>
 					<td><input type="submit" value="Assign to Kid" /></td>
 				</tr>
 </form:form>
@@ -35,7 +35,7 @@
 <br>
 <br>
 <div>
-<form:form id="addChoreForm" action="addChoreProcess" method="post" modelAttribute="chores">
+<form:form id="addChoreForm" action="addChoreProcessandAssign" method="post" modelAttribute="chores">
 	<table>
 		<thead>
 			<tr>
@@ -51,6 +51,7 @@
 					 <form:input path="ChorePoints" /></td>
 				</tr>
 				<tr>
+		<input type ="hidden" name="loginId" value="${kidSelected.loginId}"/>
 					<td><input type="submit" value="Submit" /><input type="reset"></td>
 				</tr>
 			</tbody>

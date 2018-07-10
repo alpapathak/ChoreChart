@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.chorechart.dao.ChoresDAO;
@@ -24,7 +25,7 @@ import com.chorechart.model.Parents;
 import com.chorechart.model.kid_chore;
 
 @Controller
-@RequestMapping("kids")
+@SessionAttributes("kidSelected")
 public class KidsController {
 	 @Autowired
 	 private KidsDAO kidsDAO;
@@ -57,21 +58,36 @@ public class KidsController {
 	  }
 	 
 	 @RequestMapping(value="/addChoreKidProcess",method=RequestMethod.POST)
-	 public ModelAndView assignChoretoKid(@ModelAttribute("parentObj")Parents parents,@ModelAttribute("kidSelected")Kids kidSelected,HttpServletRequest request, HttpServletResponse response,
+	 public ModelAndView assignChoretoKid(@RequestParam("loginId")String kidsName,@ModelAttribute("parentObj")Parents parents,HttpServletRequest request, HttpServletResponse response,
 			  @ModelAttribute Chores newChore,BindingResult result) {
-				
-		 choresDAO.assignChoreToKid(kidSelected.getLoginId(),newChore.getChoreId(),newChore.getChorePoints());
+		 choresDAO.assignChoreToKid(kidsName,newChore.getChoreId(),newChore.getChorePoints());
 		 List<kid_chore> choreslist = new ArrayList<kid_chore>();
-		 choreslist=choresDAO.displayCompletedChoresOfUser(kidSelected.getLoginId());
+		 choreslist=choresDAO.displayCompletedChoresOfUser(kidsName);
+		 Kids kidSelected = new Kids();
+		 kidSelected.setLoginId(kidsName);
 		 ModelAndView modelandview = new ModelAndView("ChildActivityFromParent");
 		 modelandview.addObject("parentFName",parents.getFirstName());
 		 modelandview.addObject("parentLName", parents.getLastName());
 		 modelandview.addObject("userName",parents.getUserName());
 		 modelandview.addObject("allChoresOfKids",choreslist);
 		 modelandview.addObject("parentObj",parents);
-		 modelandview.addObject("loginId",kidSelected.getLoginId());
+		 modelandview.addObject("kidSelected",kidSelected);
 		 return modelandview;
 	}
+	 
+	 @RequestMapping(value = "/addChoreProcessandAssign", method = RequestMethod.POST)
+	  public ModelAndView addNewChore(HttpServletRequest request, HttpServletResponse response,
+	  @ModelAttribute Chores newChore,@RequestParam("loginId")String kidSelected,BindingResult result) {
+		 
+		// choresDAO.addChore(newChore);
+		 
+		// choresDAO.assignChoreToKid(kidSelected,newChore.getChoreId(),newChore.getChorePoints());
+		 choresDAO.addAndAssignChoreToKid(kidSelected, newChore);
+		 List<Chores> choreslist = new ArrayList<Chores>();
+		 choreslist=choresDAO.displayChores();
+		 ModelAndView modelandview = new ModelAndView("ChildActivityFromParent");
+		 return modelandview;
+	  }
 	 
 	 @RequestMapping(value="/complete",method=RequestMethod.GET)
 	 public ModelAndView completeChore(@RequestParam("loginId")String kidsName,@RequestParam("choreId")int choreId,HttpServletRequest request, HttpServletResponse response,

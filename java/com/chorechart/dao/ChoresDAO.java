@@ -14,5 +14,6 @@ public interface ChoresDAO {
 	public void assignChoreToKid(String loginId,int choreId,int points);
 	public void setApproveStatus(String loginId,int choreId);
 	public void setCompleteStatus(String loginId,int choreId);
+	public void addAndAssignChoreToKid(String loginId,Chores newChore);
 
 }
