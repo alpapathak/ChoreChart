@@ -12,6 +12,8 @@
 		<scope>provided</scope>
 	</dependency>
 		
+		
+		
 	<dependency>
 	    <groupId>org.springframework</groupId>
 	    <artifactId>spring-core</artifactId>
@@ -106,6 +108,13 @@
 						<contextReloadable>true</contextReloadable>
 					</configuration>
 				</plugin>
+					<plugin>            
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-war-plugin</artifactId>
+  <configuration>
+    <webXml>src\main\webapp\WEB-INF\web.xml</webXml>        
+  </configuration>
+</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
